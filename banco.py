@@ -40,6 +40,8 @@ def minha_pontuacao(user):
     meu_ponto=0
     for linha in cursor.fetchall():
         meu_ponto=int(linha)
+        
+    con.close
     return meu_ponto
 
 def aumenta_pontos(user, numero_gerado):
@@ -52,7 +54,7 @@ def aumenta_pontos(user, numero_gerado):
 def zera_pontos(user):
     con= sql3.connect('twitchdata.db')
     cursor=con.cursor()
-    cursor.execute("""UPDATE pontos SET pontuacao=? WHERE id_usuario LIKE ?""",(0,user.id))
+    cursor.execute("""UPDATE pontos SET pontuacao=? WHERE id_usuario LIKE ?""",(0, user.id))
     con.commit()
     con.close()
 

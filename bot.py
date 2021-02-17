@@ -6,9 +6,7 @@ from random import randint
 from user import User
 from banco import *
 from time import sleep
-#from comandos import faca_comando
-
-
+from ens import pega_ensinamento,insere_ensinamento
 class BoiRobot(ibot.SingleServerIRCBot):
     def __init__(self, user_name, client_id, token, channel):
         self.client_id = client_id
@@ -52,29 +50,38 @@ class BoiRobot(ibot.SingleServerIRCBot):
         
         if e.arguments[0][:1] == '!':
             cmd = e.arguments[0].split(' ')[0][1:]
+            argumento1=''
+            if len(e.arguments) > 1:
+                argumento1 = e.arguments[0].split(' ')[1]
+            print(argumento1)
             print('Comando recebido: ' + cmd)
             print('Comando recebido de: ' + user['name'])
             #chamou=user['name']
-            self.faca_comando(e, cmd, chamou)
+            self.faca_comando(e, cmd, chamou,argumento1)
         return
     
-    def faca_comando(self, e, cmd, quem_chamou):
+    def faca_comando(self, e, cmd, quem_chamou,argumentos):
         c=self.connection
         if cmd == 'cmds' or cmd == 'comandos':
             msgs=[
                 'Ola @'+quem_chamou.displayName+' o BoiRobot tem os comandos abaixo:',
-                'ensinamentodocampo = Te manda uma mensagem aleatoria',
+                'ensinamentodocampo/ec = Te manda uma mensagem aleatoria',
                 'agenda = te envia a agenda de lives',
                 'dado = Entre em nosso joguinho e tente fazer uma pontuação maior que todos',
             ]
             for msg in msgs:
                 sleep(0.25)
                 c.privmsg(self.channel, msg)
-        elif cmd == 'ensinamentodocampo':
-            msg = ''
+        elif cmd == 'ensinamentodocampo' or cmd == 'ensinamento' or cmd == 'ec':
+            #fazer esta parte
+            msg = pega_ensinamento()
             c.privmsg(self.channel, msg)
+        elif cmd == 'insereensino' or cmd == 'iec':
+            insere_ensinamento(quem_chamou,argumentos)
+            mensagem='Ensinamento inserido com sucesso!'
+            c.privmsg(self.channel, mensagem)
         elif cmd == 'agenda':
-            msg = 'O Boirods faz lives todos os dias ás 7 da manhã (horário de Brasilia)'
+            msg = 'O Boirods faz lives todos os dias ás 7 da manhã (horário de Brasilia), mas á partir de segunda feira fará á partir das 19:30 eu acho'
             c.privmsg(self.channel, msg)
         elif cmd == 'dado':
             numero_gerado=randint(1,6)
@@ -95,16 +102,14 @@ class BoiRobot(ibot.SingleServerIRCBot):
                 c.privmsg(self.channel, 'Todos os pontos foram zerados!')
             else:
                 c.privmsg(self.channel, '@'+quem_chamou.displayName+' você não tem autorização para executar este comando!')
+        elif cmd == 'ranking':
+            #O ranking deve pegar as 3 maiores pontuações e a pontuação de quem a chamou
+            pass
         else:
             print("Não entendi esse comando: " + cmd)
 
 
 def main():
-    # if len(sys.argv) != 5:
-    #     print(
-    #         'Para usar o bot são necessários 5 argumentos, são eles:\nusername: Nome do bot\nClient-ID: token do client id\nToken OAUTH: token recebido na twitch\nChannel: é o canal')
-    #     sys.exit(1)
-
     cfg=configparser.ConfigParser()
     cfg.read('data.ini')
 
@@ -116,7 +121,6 @@ def main():
 
     bot = BoiRobot(user_name, client_id, token, channel)
     bot.start()
-
 
 if __name__ == '__main__':
     main()
