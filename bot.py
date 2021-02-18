@@ -53,7 +53,7 @@ class BoiRobot(ibot.SingleServerIRCBot):
             argumento1=''
             if len(e.arguments) > 1:
                 argumento1 = e.arguments[0].split(' ')[1]
-            print(argumento1)
+            # print(argumento1)
             print('Comando recebido: ' + cmd)
             print('Comando recebido de: ' + user['name'])
             #chamou=user['name']
@@ -73,7 +73,6 @@ class BoiRobot(ibot.SingleServerIRCBot):
                 sleep(0.25)
                 c.privmsg(self.channel, msg)
         elif cmd == 'ensinamentodocampo' or cmd == 'ensinamento' or cmd == 'ec':
-            #fazer esta parte
             msg = pega_ensinamento()
             c.privmsg(self.channel, msg)
         elif cmd == 'insereensino' or cmd == 'iec':
@@ -81,7 +80,7 @@ class BoiRobot(ibot.SingleServerIRCBot):
             mensagem='Ensinamento inserido com sucesso!'
             c.privmsg(self.channel, mensagem)
         elif cmd == 'agenda':
-            msg = 'O Boirods faz lives todos os dias ás 7 da manhã (horário de Brasilia), mas á partir de segunda feira fará á partir das 19:30 eu acho'
+            msg = 'O Boirods faz lives todos os dias ás 7 da manhã (horário de Brasilia), mas á partir de segunda feira fará á partir das 19:30 eu acho!'
             c.privmsg(self.channel, msg)
         elif cmd == 'dado':
             numero_gerado=randint(1,6)
@@ -102,9 +101,11 @@ class BoiRobot(ibot.SingleServerIRCBot):
                 c.privmsg(self.channel, 'Todos os pontos foram zerados!')
             else:
                 c.privmsg(self.channel, '@'+quem_chamou.displayName+' você não tem autorização para executar este comando!')
-        elif cmd == 'ranking':
-            #O ranking deve pegar as 3 maiores pontuações e a pontuação de quem a chamou
-            pass
+        elif cmd == 'colocacao':
+            maiores=pegaTresMaioresPontos()
+            for maior in maiores:
+                print(maior[0]+' tem '+str(maior[1])+" pontos!")
+                c.privmsg(self.channel, maior[0]+' tem '+str(maior[1])+" pontos!")
         else:
             print("Não entendi esse comando: " + cmd)
 

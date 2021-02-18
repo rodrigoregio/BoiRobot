@@ -22,7 +22,7 @@ def insere_usuario(user):
     con=sql3.connect('twitchdata.db')
     cursor=con.cursor()
     #conexao=conecta()
-    cursor.execute("""INSERT OR IGNORE INTO usuarios (id,display_name) VALUES (?,?)""",(user.id,user.displayName))
+    cursor.execute("""INSERT OR IGNORE INTO usuarios (id,display_name) VALUES (?,?)""",(user.id, user.displayName))
     con.commit()
     con.close()
 
@@ -41,7 +41,7 @@ def minha_pontuacao(user):
     for linha in cursor.fetchall():
         meu_ponto=int(linha)
         
-    con.close
+    con.close()
     return meu_ponto
 
 def aumenta_pontos(user, numero_gerado):
@@ -64,5 +64,16 @@ def zera_todos_pontos():
     cursor.execute("""UPDATE pontos SET pontuacao=?""",(str(0)))
     con.commit()
     con.close()
+
+def pegaTresMaioresPontos():
+    con=sql3.connect('twitchdata.db')
+    cursor=con.cursor()
+    cursor.execute("""SELECT display_name,pontuacao FROM pontos INNER JOIN usuarios ON usuarios.id=pontos.id_usuario ORDER BY pontuacao DESC LIMIT 3""")
+    maiores=[]
+    for linha in cursor.fetchall():
+        maiores.append(linha)
+        
+    con.close()
+    return maiores
 
 cria_tabela()

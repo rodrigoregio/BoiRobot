@@ -20,7 +20,7 @@ def insere_ensinamento(user,ensinamento):
     ensinamento=troca_porespaco(ensinamento)
     cursor.execute("""INSERT INTO ensinamentos (id_usuario,ensinamento) VALUES (?,?)""",(user.id,ensinamento))
     con.commit()
-    con.close
+    con.close()
     print('Ensinamento inserido com sucesso!')
 
 def troca_porespaco(argumento):
