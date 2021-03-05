@@ -63,15 +63,8 @@ class BoiRobot(ibot.SingleServerIRCBot):
     def faca_comando(self, e, cmd, quem_chamou,argumentos):
         c=self.connection
         if cmd == 'cmds' or cmd == 'comandos':
-            msgs=[
-                'Ola @'+quem_chamou.displayName+' o BoiRobot tem os comandos abaixo:',
-                'ensinamentodocampo/ec = Te manda uma mensagem aleatoria',
-                'agenda = te envia a agenda de lives',
-                'dado = Entre em nosso joguinho e tente fazer uma pontuação maior que todos',
-            ]
-            for msg in msgs:
-                sleep(0.25)
-                c.privmsg(self.channel, msg)
+            msgs='Veja meus comandos em https://boirobot.rregio.top!'
+            c.privmsg(self.channel, msgs)
         elif cmd == 'ensinamentodocampo' or cmd == 'ensinamento' or cmd == 'ec':
             msg = pega_ensinamento()
             c.privmsg(self.channel, msg)
@@ -80,7 +73,7 @@ class BoiRobot(ibot.SingleServerIRCBot):
             mensagem='Ensinamento inserido com sucesso!'
             c.privmsg(self.channel, mensagem)
         elif cmd == 'agenda':
-            msg = 'O Boirods faz lives todos os dias ás 7 da manhã (horário de Brasilia), mas á partir de segunda feira fará á partir das 19:30 eu acho!'
+            msg = 'O boirods fazia lives todos os dias das 7 ás 9 porém não faz mais pois está trabalhando, e estou sem casa :('
             c.privmsg(self.channel, msg)
         elif cmd == 'dado':
             numero_gerado=randint(1,6)
@@ -101,13 +94,13 @@ class BoiRobot(ibot.SingleServerIRCBot):
                 c.privmsg(self.channel, 'Todos os pontos foram zerados!')
             else:
                 c.privmsg(self.channel, '@'+quem_chamou.displayName+' você não tem autorização para executar este comando!')
-        elif cmd == 'colocacao':
+        elif cmd == 'podium':
             maiores=pegaTresMaioresPontos()
             for maior in maiores:
                 print(maior[0]+' tem '+str(maior[1])+" pontos!")
                 c.privmsg(self.channel, maior[0]+' tem '+str(maior[1])+" pontos!")
         else:
-            print("Não entendi esse comando: " + cmd)
+            print("Não entendi esse comando: " + cmd+" mas você pode me ensinar??")
 
 
 def main():
