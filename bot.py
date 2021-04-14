@@ -2,7 +2,7 @@ import sys
 import configparser
 import irc.bot as ibot
 import requests
-from random import randint
+from random import randint,choice
 from user import User
 from banco import *
 from time import sleep
@@ -13,6 +13,7 @@ class BoiRobot(ibot.SingleServerIRCBot):
         self.token = token
         self.channel = '#' + channel
         self.user_name = user_name
+        self.cont=0
 
         # pega o id do canal, vamos precisar disso para chamadas da api
         url = 'https://api.twitch.tv/kraken/users?login=' + self.user_name
@@ -34,7 +35,7 @@ class BoiRobot(ibot.SingleServerIRCBot):
         c.cap('REQ', ':twitch.tv/commands')
         c.join(self.channel)
         c.privmsg(self.channel,"Agora o BoiRobot está on!")
-        print('Me juntei...')
+        print('Me juntei...')        
 
     def on_pubmsg(self, c, e):
         # Se uma mensagem de chat começa com ponto de esclamação, tente rodar ele como um comando
@@ -46,20 +47,40 @@ class BoiRobot(ibot.SingleServerIRCBot):
             user['name']
         )#classe
         insere_usuario(chamou)#inserir a classe
-        insere_ponto(chamou)
+        insere_pontoGame(chamou)
+        self.cont=self.cont+1
+        if self.cont == 10:
+            rmsg=auto_messages()
+            self.cont=0
+            c.privmsg(self.channel,rmsg)
+        
+        conceitos=pegaTresMaioresPontos()
+        print(e.arguments())
+        frase=e.arguments().split(' ')
+        for conceito in conceitos:
+            if conceitos in frase:
+                print('atualizaram no seu conceito')
         
         if e.arguments[0][:1] == '!':
-            cmd = e.arguments[0].split(' ')[0][1:]
+            argumentos = e.arguments[0].split(' ')
+            print('Argumento: ',argumentos)
             argumento1=''
-            if len(e.arguments) > 1:
-                argumento1 = e.arguments[0].split(' ')[1]
-            # print(argumento1)
-            print('Comando recebido: ' + cmd)
+            comando=argumentos[0][1:]
+            if len(argumentos) > 1:
+                argumento1=argumentos[1]
+                print('Argumento: ',argumento1)
+            elif len(e.arguments) == 0:
+                print("argumentos igual a 0")
+
+            print(argumento1)
+            print('Comando recebido: ' + comando)
             print('Comando recebido de: ' + user['name'])
             #chamou=user['name']
-            self.faca_comando(e, cmd, chamou,argumento1)
-        return
-    
+            self.faca_comando(e, comando, chamou,argumento1)
+        
+
+
+
     def faca_comando(self, e, cmd, quem_chamou,argumentos):
         c=self.connection
         if cmd == 'cmds' or cmd == 'comandos':
@@ -69,11 +90,12 @@ class BoiRobot(ibot.SingleServerIRCBot):
             msg = pega_ensinamento()
             c.privmsg(self.channel, msg)
         elif cmd == 'insereensino' or cmd == 'iec':
+            print("Argumentos: ",argumentos)
             insere_ensinamento(quem_chamou,argumentos)
             mensagem='Ensinamento inserido com sucesso!'
             c.privmsg(self.channel, mensagem)
         elif cmd == 'agenda':
-            msg = 'O boirods fazia lives todos os dias das 7 ás 9 porém não faz mais pois está trabalhando, e estou sem casa :('
+            msg = 'O boirods me disse que tentará fazer lives todos os dias das 19 até entre 21 e 22 horas. Tenho casa denovo... :)'
             c.privmsg(self.channel, msg)
         elif cmd == 'dado':
             numero_gerado=randint(1,6)
@@ -99,13 +121,19 @@ class BoiRobot(ibot.SingleServerIRCBot):
             for maior in maiores:
                 print(maior[0]+' tem '+str(maior[1])+" pontos!")
                 c.privmsg(self.channel, maior[0]+' tem '+str(maior[1])+" pontos!")
+            c.privmsg(self.channel, 'Você tem ',minha_pontuacaoDado(),' pontos!')
         else:
             print("Não entendi esse comando: " + cmd+" mas você pode me ensinar??")
 
+def auto_messages():
+    lista_comandos=['cmds', 'dado','ec']
+    comando = choice(lista_comandos)
+    msgs='Bot Help! dê um !'+comando
+    return msgs
 
 def main():
     cfg=configparser.ConfigParser()
-    cfg.read('data.ini')
+    cfg.read('data.ini')        
 
     client_id = cfg.get('section1','CLIENT_ID')
     user_name = cfg.get('section1','BOT_NICK')
@@ -115,6 +143,7 @@ def main():
 
     bot = BoiRobot(user_name, client_id, token, channel)
     bot.start()
+    
 
 if __name__ == '__main__':
     main()

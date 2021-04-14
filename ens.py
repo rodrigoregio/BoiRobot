@@ -17,7 +17,9 @@ def pega_ensinamento():
 def insere_ensinamento(user,ensinamento):
     con=sql3.connect('twitchdata.db')
     cursor=con.cursor()
+    print(ensinamento)
     ensinamento=troca_porespaco(ensinamento)
+    print(ensinamento)
     cursor.execute("""INSERT INTO ensinamentos (id_usuario,ensinamento) VALUES (?,?)""",(user.id,ensinamento))
     con.commit()
     con.close()
@@ -27,4 +29,4 @@ def troca_porespaco(argumento):
     texto=argumento.replace('_',' ')
     return texto
 
-print(pega_ensinamento())
+#print(pega_ensinamento())
