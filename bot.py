@@ -1,4 +1,4 @@
-import sys
+import os
 import configparser
 import irc.bot as ibot
 import requests
@@ -123,13 +123,19 @@ class BoiRobot(ibot.SingleServerIRCBot):
 
 
 def main():
-    cfg=configparser.ConfigParser()
-    cfg.read('data.ini')
+    load_dotenv()
+    #cfg=configparser.ConfigParser()
+    #cfg.read('data.ini')
 
-    client_id = cfg.get('section1','CLIENT_ID')
-    user_name = cfg.get('section1','BOT_NICK')
-    token = cfg.get('section1','TMI_TOKEN')
-    channel = cfg.get('section1','CHANNEL')
+    #client_id = cfg.get('section1','CLIENT_ID')
+    client_id = os.environ['CLIENT_ID']
+    #user_name = cfg.get('section1','BOT_NICK')
+    user_name = os.environ['BOT_NICK']
+    #token = cfg.get('section1','TMI_TOKEN')
+    token = os.environ['TOKEN']
+    #channel = cfg.get('section1','CHANNEL')
+    channel = os.environ['CHANNEL']
+
     print(f'Dados lidos:\nuser_name: {user_name}, \ncli_id: {client_id},\nToken: {token},\nCanal: {channel}')
 
     bot = BoiRobot(user_name, client_id, token, channel)
