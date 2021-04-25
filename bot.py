@@ -4,7 +4,7 @@ import irc.bot as ibot
 import requests
 from random import randint
 from user import User
-import banco
+from banco import *
 from time import sleep
 from random import choice
 from ens import pega_ensinamento,insere_ensinamento
@@ -47,8 +47,8 @@ class BoiRobot(ibot.SingleServerIRCBot):
             user['id'],
             user['name']
         )#classe
-        insere_usuario(chamou)#inserir a classe
-        insere_ponto(chamou)
+        banco.insere_usuario(chamou)#inserir a classe
+        banco.insere_ponto(chamou)
 
         self.cont+=1
         if self.cont==10:
