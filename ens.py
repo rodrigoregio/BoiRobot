@@ -26,5 +26,3 @@ def insere_ensinamento(user,ensinamento):
 def troca_porespaco(argumento):
     texto=argumento.replace('_',' ')
     return texto
-
-print(pega_ensinamento())
