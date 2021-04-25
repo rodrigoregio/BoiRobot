@@ -134,3 +134,6 @@ dmypy.json
 myenv/
 data.ini
 twitchdata.db
+boirobot/
+univespace/
+newrelic.ini

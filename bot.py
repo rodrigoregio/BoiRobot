@@ -6,6 +6,7 @@ from random import randint
 from user import User
 from banco import *
 from time import sleep
+from random import choice
 from ens import pega_ensinamento,insere_ensinamento
 class BoiRobot(ibot.SingleServerIRCBot):
     def __init__(self, user_name, client_id, token, channel):
@@ -13,6 +14,7 @@ class BoiRobot(ibot.SingleServerIRCBot):
         self.token = token
         self.channel = '#' + channel
         self.user_name = user_name
+        self.cont=0
 
         # pega o id do canal, vamos precisar disso para chamadas da api
         url = 'https://api.twitch.tv/kraken/users?login=' + self.user_name
@@ -47,17 +49,34 @@ class BoiRobot(ibot.SingleServerIRCBot):
         )#classe
         insere_usuario(chamou)#inserir a classe
         insere_ponto(chamou)
+
+        self.cont+=1
+        if self.cont==10:
+            aleatoria=["Bot helper: Tente um !ec",
+                       "Bot helper: Tente um !dado",
+                       "Bot helper: Tente um !agenda",
+                       "Bot helper: Tente um !podium",
+                       "!sh pachicodes",
+                       "!sh kaduzius",
+                       "!sh levxyca"]
+            c.privmsg(self.channel,choice(aleatoria))
+            self.cont=0
         
         if e.arguments[0][:1] == '!':
-            cmd = e.arguments[0].split(' ')[0][1:]
+            print(e.arguments)
+            comandos=e.arguments[0].split(' ')
+            print('Argumentos: ', comandos)
             argumento1=''
-            if len(e.arguments) > 1:
-                argumento1 = e.arguments[0].split(' ')[1]
+            if len(comandos) > 1:
+                argumento1=comandos[1]
+                print(argumento1)
             # print(argumento1)
-            print('Comando recebido: ' + cmd)
+            print('Comando recebido: ' + argumento1)
             print('Comando recebido de: ' + user['name'])
             #chamou=user['name']
-            self.faca_comando(e, cmd, chamou,argumento1)
+            comandos=comandos[0][1:]
+            #print('Tirou ! ? ', comandos)
+            self.faca_comando(e, comandos, chamou, argumento1)
         return
     
     def faca_comando(self, e, cmd, quem_chamou,argumentos):
