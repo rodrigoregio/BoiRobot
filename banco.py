@@ -11,7 +11,7 @@ def cria_tabela_ensinamentos():
     con=sql3.connect('twitchdata.db')
     cursor=con.cursor()
     cursor.execute(
-        'CREATE TABLE IF NOT EXISTS ensinamentos(id_usuario INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,'+
+        'CREATE TABLE IF NOT EXISTS ensinamentos(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,'+
         'id_usuario TEXT NOT NULL,'+
         'ensinamento TEXT NOT NULL);'
     )
