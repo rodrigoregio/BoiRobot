@@ -7,13 +7,49 @@ import sqlite3 as sql3
 #    con[1]=con.cursor()
 #    return con
 
-def cria_tabela():
+def cria_tabela_ensinamentos():
     con=sql3.connect('twitchdata.db')
     cursor=con.cursor()
     cursor.execute(
         'CREATE TABLE IF NOT EXISTS ensinamentos(id_usuario INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,'+
         'id_usuario TEXT NOT NULL,'+
         'ensinamento TEXT NOT NULL);'
+    )
+    print('tabela criada com sucesso!')
+    con.close()
+
+def cria_tabela_Game():
+    con=sql3.connect('twitchdata.db')
+    cursor=con.cursor()
+    cursor.execute(
+        'CREATE TABLE IF NOT EXISTS Game(id_usuario TEXT NOT NULL PRIMARY KEY,pontuacao INTEGER NOT NULL DEFAULT 0)'
+    )
+    print('tabela criada com sucesso!')
+    con.close()
+
+def cria_tabela_conceito_usuario():
+    con=sql3.connect('twitchdata.db')
+    cursor=con.cursor()
+    cursor.execute(
+        'CREATE TABLE IF NOT EXISTS conceito_usuario(id_usuario TEXT NOT NULL PRIMARY KEY,nivel INTEGER NOT NULL,ultimo TEXT NOT NULL)'
+    )
+    print('tabela criada com sucesso!')
+    con.close()
+
+def cria_tabela_conceito():
+    con=sql3.connect('twitchdata.db')
+    cursor=con.cursor()
+    cursor.execute(
+        'CREATE TABLE IF NOT EXISTS conceitos(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,palavra TEXT NOT NULL,pontuacao TEXT NOT NULL)'
+    )
+    print('tabela criada com sucesso!')
+    con.close()
+
+def cria_tabela_usuario():
+    con=sql3.connect('twitchdata.db')
+    cursor=con.cursor()
+    cursor.execute(
+        'CREATE TABLE IF NOT EXISTS usuario(id_usuario TEXT NOT NULL PRIMARY KEY,display_name TEXT NOT NULL)'
     )
     print('tabela criada com sucesso!')
     con.close()
@@ -76,4 +112,8 @@ def pegaTresMaioresPontos():
     con.close()
     return maiores
 
-cria_tabela()
+cria_tabela_usuario()
+cria_tabela_ensinamentos()
+cria_tabela_Game()
+cria_tabela_conceito_usuario()
+cria_tabela_conceito()

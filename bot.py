@@ -4,7 +4,7 @@ import irc.bot as ibot
 import requests
 from random import randint
 from user import User
-from banco import *
+import banco
 from time import sleep
 from random import choice
 from ens import pega_ensinamento,insere_ensinamento
