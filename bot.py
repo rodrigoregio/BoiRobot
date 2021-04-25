@@ -123,7 +123,7 @@ class BoiRobot(ibot.SingleServerIRCBot):
 
 
 def main():
-    load_dotenv()
+    #load_dotenv()
     #cfg=configparser.ConfigParser()
     #cfg.read('data.ini')
 
