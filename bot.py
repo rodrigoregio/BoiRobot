@@ -47,8 +47,8 @@ class BoiRobot(ibot.SingleServerIRCBot):
             user['id'],
             user['name']
         )#classe
-        banco.insere_usuario(chamou)#inserir a classe
-        banco.insere_ponto(chamou)
+        insere_usuario(chamou)#inserir a classe
+        insere_ponto(chamou)
 
         self.cont+=1
         if self.cont==10:
