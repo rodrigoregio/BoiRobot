@@ -6,7 +6,7 @@ from random import randint
 from user import User
 from banco import *
 from time import sleep
-from random import choice
+from random import choice,randint
 from ens import pega_ensinamento,insere_ensinamento
 class BoiRobot(ibot.SingleServerIRCBot):
     def __init__(self, user_name, client_id, token, channel):
@@ -27,6 +27,8 @@ class BoiRobot(ibot.SingleServerIRCBot):
         port = 6667
         print('Conectando a ' + server + ' na porta ' + str(port) + '...')
         super().__init__([(server, port, 'oauth:' + token)], self.user_name, self.user_name)
+
+    def n
 
     def on_welcome(self, c, e):
         print('Se juntando a ', self.channel)
@@ -84,16 +86,24 @@ class BoiRobot(ibot.SingleServerIRCBot):
         if cmd == 'cmds' or cmd == 'comandos':
             msgs='Veja meus comandos em https://boirobot.rregio.top!'
             c.privmsg(self.channel, msgs)
+
+
         elif cmd == 'ensinamentodocampo' or cmd == 'ensinamento' or cmd == 'ec':
             msg = pega_ensinamento()
             c.privmsg(self.channel, msg)
+
+
         elif cmd == 'insereensino' or cmd == 'iec':
             insere_ensinamento(quem_chamou,argumentos)
-            mensagem='Ensinamento inserido com sucesso!'
+            mensagem='Envie um ensinamento ao boirods no sussurro! Que ele certamente irá implementar! Não sei quando, mas vai Kappa :D'
             c.privmsg(self.channel, mensagem)
+
+
         elif cmd == 'agenda':
-            msg = 'O boirods fazia lives todos os dias das 7 ás 9 porém não faz mais pois está trabalhando, e estou sem casa :('
+            msg = 'O boirods faz lives todos os finais de semana, não sei os horários (geralmente de manhã), mas faz! Tenho minha casa ;p'
             c.privmsg(self.channel, msg)
+
+
         elif cmd == 'dado':
             numero_gerado=randint(1,6)
             if numero_gerado != 1:
@@ -106,6 +116,7 @@ class BoiRobot(ibot.SingleServerIRCBot):
                 zera_pontos(quem_chamou)
                 c.privmsg(self.channel, msg1)
                 c.privmsg(self.channel, msg2)
+
         elif cmd=='zerapontos':
             if quem_chamou.id == '548002631':
                 print('Todos os pontos serão zerados!')
@@ -113,11 +124,14 @@ class BoiRobot(ibot.SingleServerIRCBot):
                 c.privmsg(self.channel, 'Todos os pontos foram zerados!')
             else:
                 c.privmsg(self.channel, '@'+quem_chamou.displayName+' você não tem autorização para executar este comando!')
+
         elif cmd == 'podium':
             maiores=pegaTresMaioresPontos()
             for maior in maiores:
                 print(maior[0]+' tem '+str(maior[1])+" pontos!")
                 c.privmsg(self.channel, maior[0]+' tem '+str(maior[1])+" pontos!")
+
+
         else:
             print("Não entendi esse comando: " + cmd+" mas você pode me ensinar??")
 
