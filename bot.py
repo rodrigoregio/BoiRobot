@@ -15,6 +15,7 @@ class BoiRobot(ibot.SingleServerIRCBot):
         self.channel = '#' + channel
         self.user_name = user_name
         self.cont=0
+        self.saidinha=False
 
         # pega o id do canal, vamos precisar disso para chamadas da api HORA_DA_VERDADE
         url = 'https://api.twitch.tv/kraken/users?login=' + self.user_name
@@ -77,6 +78,9 @@ class BoiRobot(ibot.SingleServerIRCBot):
             comandos=comandos[0][1:]
             #print('Tirou ! ? ', comandos)
             self.faca_comando(e, comandos, chamou, argumento1)
+        elif self.saidinha:
+            c.privmsg(self.channel, 'O boirods deu uma saidinha e disse que volta logo, fique para conversar com ele!!')
+
         return
     
     def faca_comando(self, e, cmd, quem_chamou,argumentos):
@@ -118,6 +122,18 @@ class BoiRobot(ibot.SingleServerIRCBot):
             for maior in maiores:
                 print(maior[0]+' tem '+str(maior[1])+" pontos!")
                 c.privmsg(self.channel, maior[0]+' tem '+str(maior[1])+" pontos!")
+        elif cmd == 'saidinha':
+            if quem_chamou.id == '548002631':
+                self.saidinha=True
+                c.privmsg(self.channel,'Volte logo Boirods, tentarei deixar o povo em ordem!')
+            else:
+                c.privmsg(self.channel,'Este comando é para o streamer (se ele der uma saidinha)!')
+        elif cmd == 'voltadinha':
+            if quem_chamou.id == '548002631':
+                self.saidinha=False
+                c.privmsg(self.channel,'Que bom que voltou Boirods, não estava mais aguentando XD')
+            else:
+                c.privmsg(self.channel,'Não se exaltem, o Boirods ainda não voltou!!')
         else:
             print("Não entendi esse comando: " + cmd+" mas você pode me ensinar??")
 
