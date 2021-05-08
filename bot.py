@@ -16,7 +16,7 @@ class BoiRobot(ibot.SingleServerIRCBot):
         self.user_name = user_name
         self.cont=0
 
-        # pega o id do canal, vamos precisar disso para chamadas da api
+        # pega o id do canal, vamos precisar disso para chamadas da api HORA_DA_VERDADE
         url = 'https://api.twitch.tv/kraken/users?login=' + self.user_name
         headers = {'Client-ID': self.client_id, 'Accept': 'application/vnd.twitchtv.v5+json'}
         resp = requests.get(url, headers=headers).json()
@@ -92,7 +92,7 @@ class BoiRobot(ibot.SingleServerIRCBot):
             mensagem='Ensinamento inserido com sucesso!'
             c.privmsg(self.channel, mensagem)
         elif cmd == 'agenda':
-            msg = 'O boirods fazia lives todos os dias das 7 ás 9 porém não faz mais pois está trabalhando, e estou sem casa :('
+            msg = 'O boirods faz lives todos os finais de semana, não sei dizer os horários, mas faz... Fique de olho ;)'
             c.privmsg(self.channel, msg)
         elif cmd == 'dado':
             numero_gerado=randint(1,6)
