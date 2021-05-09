@@ -33,6 +33,18 @@ def insere_ponto(user):
     con.commit()
     con.close()
 
+def baralho_ponto():
+    con=sql3.connect('twitchdata.db')
+    cursor=con.cursor()
+    cursor.execute(
+        'CREATE TABLE IF NOT EXISTS baralho_pontos(id_usuario INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,'+
+        'pontos INTEGER NOT NULL,'+
+        'recorde INTEGER NOT NULL);'
+    )
+    con.commit()
+    con.close()
+    
+
 def minha_pontuacao(user):
     con=sql3.connect('twitchdata.db')
     cursor=con.cursor()
