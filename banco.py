@@ -43,6 +43,10 @@ def baralho_ponto():
     )
     con.commit()
     con.close()
+
+def insere_baralho():
+    con=sql3.connect('twitchdata.db')
+    cursor = con.cursor()
     
 
 def minha_pontuacao(user):
@@ -88,4 +92,3 @@ def pegaTresMaioresPontos():
     con.close()
     return maiores
 
-cria_tabela()
