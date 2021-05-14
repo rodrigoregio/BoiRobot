@@ -7,6 +7,9 @@ from user import User
 from banco import *
 from time import sleep
 from random import choice
+from baralho import baralho_vinteum as vinteum
+from baralho import baralho_aleatorio as bale
+from carta import Carta
 from ens import pega_ensinamento,insere_ensinamento
 class BoiRobot(ibot.SingleServerIRCBot):
     def __init__(self, user_name, client_id, token, channel):
@@ -50,16 +53,19 @@ class BoiRobot(ibot.SingleServerIRCBot):
         )#classe
         insere_usuario(chamou)#inserir a classe
         insere_ponto(chamou)
+        insere_ponto_baralho(chamou)
 
         self.cont+=1
-        if self.cont==10:
+        if self.cont==15:
             aleatoria=["Bot helper: Tente um !ec",
                        "Bot helper: Tente um !dado",
                        "Bot helper: Tente um !agenda",
+                       "Bot helper: Tente um !bale",
+                       "Bot helper: Tente um !21",
                        "Bot helper: Tente um !podium",
                        "!sh pachicodes",
                        "!sh kaduzius",
-                       "!sh levxyca"]
+                       "!sh levxyca"]#divulga meus streamers favoritos
             c.privmsg(self.channel,choice(aleatoria))
             self.cont=0
         
@@ -117,8 +123,17 @@ class BoiRobot(ibot.SingleServerIRCBot):
                 c.privmsg(self.channel, 'Todos os pontos foram zerados!')
             else:
                 c.privmsg(self.channel, '@'+quem_chamou.displayName+' você não tem autorização para executar este comando!')
+        elif cmd == '21':
+            carta = Carta()
+            carta.pontos = ve_pontos21(quem_chamou)
+            carta.quem_chamou=quem_chamou
+            carta=vinteum(carta)
+            c.privmsg(self.channel, carta.descricao)
+            aumenta_pontos21(quem_chamou, carta.pontos)
+        elif cmd == 'bale':
+            pass
         elif cmd == 'podium':
-            maiores=pegaTresMaioresPontos()
+            maiores=pegaTresMaioresPontosDados()
             for maior in maiores:
                 print(maior[0]+' tem '+str(maior[1])+" pontos!")
                 c.privmsg(self.channel, maior[0]+' tem '+str(maior[1])+" pontos!")
