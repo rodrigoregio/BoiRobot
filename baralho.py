@@ -27,12 +27,15 @@ def baralho_vinteum(carta,usuario):
     p=ve_pontos21(usuario)
     if p > 21:
         print('Você estourou, já tem mais de 21!!')
+        carta.descricao = carta.descricao + f' você estourou, já tem mais de 21!!'
     else:
         carta_escolhida=r.choice(cartas)
         carta.pontos = carta.pontos + carta_escolhida[1]
+        carta.numero=carta_escolhida[1]
+        
         carta.descricao = f'Embaralhei e puxei a carta {carta_escolhida[0]} e que soma {carta_escolhida[1]} pontos a você! E você tem {carta.pontos}'
         if carta.pontos > 21:
-            carta.descricao = carta.descricao + f'@{usuario.display_name} você estourou, já tem mais de 21!!'
+            carta.descricao = carta.descricao + f' você estourou, já tem mais de 21!!'
         elif carta.pontos == 21:
-            carta.descricao = carta.descricao + f'@{usuario.display_name} você tem {carta.pontos} pontos parabéns, poucos conseguem!'
+            carta.descricao = carta.descricao + f' você tem {carta.pontos} pontos parabéns, poucos conseguem!'
     return carta

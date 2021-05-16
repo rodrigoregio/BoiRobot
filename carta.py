@@ -2,6 +2,15 @@ class Carta:
     def __init__(self):
         self.descricao=''
         self.pontos=0
+        self.numero=0
+
+    @property
+    def numero(self):
+        return self._numero
+    
+    @numero.setter
+    def numero(self, numero):
+        self._numero=numero
 
     @property
     def descricao(self):

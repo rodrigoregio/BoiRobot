@@ -65,10 +65,10 @@ def minha_pontuacao(user):
     con.close()
     return meu_ponto
 
-def aumenta_pontos21(user, numero):
+def aumenta_pontos21(user, carta):
     con=sql3.connect('twitchdata.db')
     cursor=con.cursor()
-    cursor.execute("""UPDATE baralho_pontos SET  pontos21=pontos21+? WHERE id_usuario like ?""", (numero, user.id))
+    cursor.execute("""UPDATE baralho_pontos SET  pontos21=pontos21+? WHERE id_usuario like ?""", (carta.numero, user.id))
     con.commit()
     cursor.close()
     con.close()
@@ -91,13 +91,20 @@ def aumenta_pontos(user, numero_gerado):
 def ve_pontos21(user):
     con=sql3.connect('twitchdata.db')
     cursor=con.cursor()
-    cursor.execute("""SELECT pontos21 FROM baralho_pontos WHERE id_usuario LIKE ?""",(str(user.id)))
+    cursor.execute("""SELECT pontos21 FROM baralho_pontos WHERE id_usuario LIKE ?""",(str(user.id),))
     meu_ponto=0
     for linha in cursor.fetchall():
-        meu_ponto=int(linha)
+        meu_ponto=linha
     cursor.close()
     con.close()
-    return meu_ponto 
+    return meu_ponto[0]
+
+def zera_meus21(user):
+    con = sql3.connect('twitchdata.db')
+    cursor = con.cursor()
+    cursor.execute("""UPDATE baralho_pontos SET pontos21=0 WHERE id_usuario LIKE  ?""",(user.id,))
+    con.commit()
+    con.close()
 
 def zera_pontos(user):
     con= sql3.connect('twitchdata.db')

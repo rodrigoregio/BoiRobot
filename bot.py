@@ -73,12 +73,13 @@ class BoiRobot(ibot.SingleServerIRCBot):
             print(e.arguments)
             comandos=e.arguments[0].split(' ')
             print('Argumentos: ', comandos)
-            argumento1=''
             if len(comandos) > 1:
                 argumento1=comandos[1]
                 print(argumento1)
+            else:
+                argumento1=''
             # print(argumento1)
-            print('Comando recebido: ' + argumento1)
+            print('Comando recebido: ' + comandos[0])
             print('Comando recebido de: ' + user['name'])
             #chamou=user['name']
             comandos=comandos[0][1:]
@@ -126,12 +127,18 @@ class BoiRobot(ibot.SingleServerIRCBot):
         elif cmd == '21':
             carta = Carta()
             carta.pontos = ve_pontos21(quem_chamou)
-            carta.quem_chamou=quem_chamou
-            carta=vinteum(carta)
-            c.privmsg(self.channel, carta.descricao)
-            aumenta_pontos21(quem_chamou, carta.pontos)
+            carta=vinteum(carta,quem_chamou)
+            c.privmsg(self.channel, '@'+quem_chamou.displayName+' - '+carta.descricao)
+            aumenta_pontos21(quem_chamou, carta)
+        elif cmd == 'zerameus21':
+            zera_meus21(quem_chamou)
+            c.privmsg(self.channel, '@'+quem_chamou.displayName+' sua pontuação no 21 é 0')
+        elif cmd == 'mostra21':
+            carta=Carta()
+            carta.pontos=ve_pontos21(quem_chamou)
+            c.privmsg(self.channel, '@'+quem_chamou.displayName+' você tem '+str(carta.pontos)+" no jogo 21!")
         elif cmd == 'bale':
-            pass
+            c.privmsg(self.channel, '@'+quem_chamou.dispĺayName+' O boirod ainda não implementou esse joguinho, o joguinho está pronto, mas ainda não sei chamar ele!')
         elif cmd == 'podium':
             maiores=pegaTresMaioresPontosDados()
             for maior in maiores:
