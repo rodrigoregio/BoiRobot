@@ -5,24 +5,18 @@ from carta import Carta
 cartas=[('A',1),('2',2),('3',3),('4',4),('5',5),('6',6),('7',7),('8',8),('9',9),('10',10),('J',11),('Q',12),('K',13),('Coringa',0)];
 naipe=[('ouro',1),('copas',2),('paus',2),('espadas',1)]
 p=0
-def baralho_aleatorio(pontuacao):
+def baralho_aleatorio(carta, usuario):
     escolha_valor = r.choice(cartas)
     escolha_naipe = r.choice(naipe)
     print(escolha_valor[0]+' de '+escolha_naipe[0])
     pontos = escolha_valor[1] * escolha_naipe[1]
     print(str(escolha_valor[1]) +' * '+ str(escolha_naipe[1])+' = '+str(pontos))
-    if (escolha_valor[0] == 'Coringa') and (escolha_naipe[1] == 2):
-        pontuacao = 0
-    elif (escolha_valor[0] == 'Coringa') and (escolha_naipe[1] == 1):
-        pontuacao = -100
+    carta.descricao=escolha_naipe[0]
+    carta.numero=escolha_valor[0]
+    carta.pontos=pontos
+    return carta
 
-    if ((escolha_naipe[0] == 'paus') or (escolha_naipe[0] == 'espadas')):
-        pontuacao -= pontos
-    elif ((escolha_naipe[0] == 'copas') or (escolha_naipe[0] == 'ouro')):
-        pontuacao += pontos
-    
-    return pontuacao
-
+# já implementado
 def baralho_vinteum(carta,usuario):
     p=ve_pontos21(usuario)
     if p > 21:

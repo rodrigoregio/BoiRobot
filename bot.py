@@ -7,7 +7,8 @@ from user import User
 from banco import *
 from time import sleep
 from random import choice
-from baralho import baralho_vinteum as vinteum
+from baralho import *
+from baralho import baralho_aleatorio, baralho_vinteum as vinteum
 from baralho import baralho_aleatorio as bale
 from carta import Carta
 from ens import pega_ensinamento,insere_ensinamento
@@ -42,6 +43,7 @@ class BoiRobot(ibot.SingleServerIRCBot):
         c.privmsg(self.channel,"Agora o BoiRobot está on!")
         print('Me juntei...')
 
+
     def on_pubmsg(self, c, e):
         # Se uma mensagem de chat começa com ponto de esclamação, tente rodar ele como um comando
         tags={kvpair['key']:kvpair['value'] for kvpair in e.tags}
@@ -65,7 +67,10 @@ class BoiRobot(ibot.SingleServerIRCBot):
                        "Bot helper: Tente um !podium",
                        "!sh pachicodes",
                        "!sh kaduzius",
-                       "!sh levxyca"]#divulga meus streamers favoritos
+                       "!sh levxyca",
+                       "!sh edubom",
+                       "!sh pokemaobr",
+                       "!sh andreia_lallo"]#divulga meus streamers favoritos
             c.privmsg(self.channel,choice(aleatoria))
             self.cont=0
         
@@ -73,11 +78,13 @@ class BoiRobot(ibot.SingleServerIRCBot):
             print(e.arguments)
             comandos=e.arguments[0].split(' ')
             print('Argumentos: ', comandos)
+
             if len(comandos) > 1:
                 argumento1=comandos[1]
                 print(argumento1)
             else:
                 argumento1=''
+
             # print(argumento1)
             print('Comando recebido: ' + comandos[0])
             print('Comando recebido de: ' + user['name'])
@@ -95,28 +102,34 @@ class BoiRobot(ibot.SingleServerIRCBot):
         if cmd == 'cmds' or cmd == 'comandos':
             msgs='Veja meus comandos em https://boirobot.rregio.top!'
             c.privmsg(self.channel, msgs)
+
         elif cmd == 'ensinamentodocampo' or cmd == 'ensinamento' or cmd == 'ec':
             msg = pega_ensinamento()
             c.privmsg(self.channel, msg)
+
         elif cmd == 'insereensino' or cmd == 'iec':
             insere_ensinamento(quem_chamou,argumentos)
             mensagem='Ensinamento inserido com sucesso!'
             c.privmsg(self.channel, mensagem)
+
         elif cmd == 'agenda':
-            msg = 'O boirods faz lives todos os finais de semana, não sei dizer os horários, mas faz... Fique de olho ;)'
+            msg = 'O boirods faz lives todos os finais de semana e feriados, não sei dizer os horários, geralmente de manhã, mas faz... Fique de olho ;)'
             c.privmsg(self.channel, msg)
+
         elif cmd == 'dado':
             numero_gerado=randint(1,6)
             if numero_gerado != 1:
                 msg=f'@{quem_chamou.displayName} seu numero é: '+str(numero_gerado)
                 aumenta_pontos(quem_chamou, numero_gerado)
                 c.privmsg(self.channel, msg)
+
             else:
                 msg1=f'@{quem_chamou.displayName} seu numero é: 1'
                 msg2='Seus pontos foram zerados, tente novamente!'
                 zera_pontos(quem_chamou)
                 c.privmsg(self.channel, msg1)
                 c.privmsg(self.channel, msg2)
+
         elif cmd=='zerapontos':
             if quem_chamou.id == '548002631':
                 print('Todos os pontos serão zerados!')
@@ -124,38 +137,68 @@ class BoiRobot(ibot.SingleServerIRCBot):
                 c.privmsg(self.channel, 'Todos os pontos foram zerados!')
             else:
                 c.privmsg(self.channel, '@'+quem_chamou.displayName+' você não tem autorização para executar este comando!')
+
         elif cmd == '21':
             carta = Carta()
             carta.pontos = ve_pontos21(quem_chamou)
             carta=vinteum(carta,quem_chamou)
             c.privmsg(self.channel, '@'+quem_chamou.displayName+' - '+carta.descricao)
             aumenta_pontos21(quem_chamou, carta)
+
         elif cmd == 'zerameus21':
             zera_meus21(quem_chamou)
             c.privmsg(self.channel, '@'+quem_chamou.displayName+' sua pontuação no 21 é 0')
+
         elif cmd == 'mostra21':
             carta=Carta()
             carta.pontos=ve_pontos21(quem_chamou)
-            c.privmsg(self.channel, '@'+quem_chamou.displayName+' você tem '+str(carta.pontos)+" no jogo 21!")
+            
+            if carta.pontos < 21:
+            	c.privmsg(self.channel, '@'+quem_chamou.displayName+' você tem '+str(carta.pontos)+" no jogo 21!")
+            elif carta.pontos > 21:
+            	c.privmsg(self.channel, '@'+quem_chamou.displayName+' você tem '+str(carta.pontos)+" no jogo 21! Você estourou, zeraremos seus pontos ok?")
+            	zera_meus21(quem_chamou)
+            	c.privmsg(self.channel, '@'+quem_chamou.displayName+' sua pontuação no 21 é 0')
+            else:
+            	c.privmsg(self.channel, '@'+quem_chamou.displayName+' você tem '+str(carta.pontos)+" no jogo 21! Parabéns, poucos conseguem!")
+        
         elif cmd == 'bale':
-            c.privmsg(self.channel, '@'+quem_chamou.dispĺayName+' O boirod ainda não implementou esse joguinho, o joguinho está pronto, mas ainda não sei chamar ele!')
+            #carta = Carta()
+            #carta.pontos=ve_pontosbale(quem_chamou)
+            #carta=baralho_aleatorio(carta, quem_chamou)
+            #print(carta)
+            #if (carta.numero[0] == 'Coringa') and (carta.descricao[1] == 2):
+            #    pontuacao = 0
+            #elif (carta.numero[0] == 'Coringa') and (carta.descricao[1] == 1):
+            #    pontuacao = -100
+
+            #if ((carta.descricao[0] == 'paus') or (carta.descricao[0] == 'espadas')):
+            #    pontuacao -= carta.pontos
+            #elif ((carta.descricao[0] == 'copas') or (carta.descricao[0] == 'ouro')):
+            #    pontuacao += carta.pontos
+            #c.privmsg(self.channel,'@'+quem_chamou.displayName+" você tirou "+carta.pontos)
+            c.privmsg(self.channel, '@'+quem_chamou.displayName+' O boirod ainda não implementou esse joguinho, o joguinho está pronto, mas ainda não sei chamar ele!')
+        
         elif cmd == 'podium':
             maiores=pegaTresMaioresPontosDados()
             for maior in maiores:
                 print(maior[0]+' tem '+str(maior[1])+" pontos!")
                 c.privmsg(self.channel, maior[0]+' tem '+str(maior[1])+" pontos!")
+        
         elif cmd == 'saidinha':
             if quem_chamou.id == '548002631':
                 self.saidinha=True
                 c.privmsg(self.channel,'Volte logo Boirods, tentarei deixar o povo em ordem!')
             else:
                 c.privmsg(self.channel,'Este comando é para o streamer (se ele der uma saidinha)!')
+        
         elif cmd == 'voltadinha':
             if quem_chamou.id == '548002631':
                 self.saidinha=False
                 c.privmsg(self.channel,'Que bom que voltou Boirods, não estava mais aguentando XD')
             else:
                 c.privmsg(self.channel,'Não se exaltem, o Boirods ainda não voltou!!')
+        
         else:
             print("Não entendi esse comando: " + cmd+" mas você pode me ensinar??")
 

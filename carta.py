@@ -27,3 +27,6 @@ class Carta:
     @pontos.setter
     def pontos(self,point):
         self._pontos=point
+    
+    def __str__(self) -> str:
+        return "carta: ["+str(self.pontos)+", "+str(self.numero)+", "+self.descricao+"]"
